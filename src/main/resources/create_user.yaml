@@ -1,0 +1,11 @@
+
+use quick-quiz
+db.createUser(
+  {
+    user: "admin",
+    pwd: passwordPrompt(),  // or cleartext password
+    roles: [
+       { role: "readWrite", db: "quick-quiz" }
+    ]
+  }
+)
