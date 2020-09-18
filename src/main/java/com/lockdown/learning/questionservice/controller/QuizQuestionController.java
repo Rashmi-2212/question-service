@@ -1,6 +1,5 @@
 package com.lockdown.learning.questionservice.controller;
 
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,15 +29,21 @@ public class QuizQuestionController {
 		this.service = service;
 	}
 
-	@PostMapping("/create")
+	@PostMapping("/new")
 	@ResponseBody
 	public QuizQuestion createQuestion(@RequestBody QuizQuestion rawData) {
 		QuizQuestion saved = service.save(rawData);
 		return saved;
-
 	}
 
-	@GetMapping("/list")
+	@PostMapping("/createMultiple")
+	@ResponseBody
+	public List<QuizQuestion> createMultipleQuestion(@RequestBody List<QuizQuestion> rawData) {
+		List<QuizQuestion> saved = service.saveAll(rawData);
+		return saved;
+	}
+
+	@GetMapping
 	@ResponseBody
 	public List<QuizQuestion> listAllQuestions() {
 		return service.findAll();
@@ -57,8 +62,21 @@ public class QuizQuestionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteQuestion(@PathVariable Long id) {
-		service.delete(id);
+	@ResponseBody
+	public QuizQuestion deleteQuestion(@PathVariable Long id) {
+		return service.delete(id);
+	}
 
+	@PostMapping("deleteMultiple")
+	@ResponseBody
+	public List<QuizQuestion> deleteMultipleQuestions(@RequestBody ArrayList<Long> qIDs) {
+		final List<QuizQuestion> deletedQuestions = service.deleteMultiple(qIDs);
+		return deletedQuestions;
+	}
+
+	@DeleteMapping("/deleteAll")
+	@ResponseBody
+	public String deleteAllQuestions() {
+		return service.deleteAll();
 	}
 }

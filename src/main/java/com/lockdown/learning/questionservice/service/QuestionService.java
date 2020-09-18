@@ -24,6 +24,15 @@ public class QuestionService {
 		return data.get(rawData.getId());
 	}
 
+	public List<QuizQuestion> saveAll(List<QuizQuestion> rawData) {
+		List<QuizQuestion> returnValues = new ArrayList<>();
+		for (QuizQuestion qQ : rawData) {
+			// read all from rawdata & invoke save()
+			returnValues.add(save(qQ));
+		}
+		return returnValues;
+	}
+
 	public QuizQuestion getById(Long id) {
 		if(data.containsKey(id)) {
 			return data.get(id);
@@ -34,9 +43,16 @@ public class QuestionService {
 	
 	public List<QuizQuestion> findAll() {
 		List<QuizQuestion> list = new ArrayList<QuizQuestion>();
+		/*
 		for (Map.Entry<Long, QuizQuestion> entry: data.entrySet() ) {
-			list.add(data.get(entry.getValue()));
+			list.add(entry.getValue());
+			//list.add(data.get(entry.getKey()));
+		}*/
+
+		for (Long key: data.keySet() ) {
+			list.add(data.get(key));
 		}
+
 		return list;
 	}
 
@@ -63,11 +79,29 @@ public class QuestionService {
 
 	}
 
-	public void delete(Long id) {
+	public QuizQuestion delete(Long id) {
+		QuizQuestion deleted = null;
 		if(data.containsKey(id)) {
 			QuizQuestion value = data.get(id);
+			deleted = value;
 			data.remove(id, value);
-		}		
+			System.out.println("......deleted......");
+		}
+		return deleted;
 	}
 
+	public List<QuizQuestion> deleteMultiple(ArrayList<Long> qIDs) {
+		List<QuizQuestion> deletedQuestions = new ArrayList<>();
+		for (Long qID : qIDs) {
+			deletedQuestions.add(delete(qID));
+		}
+		return deletedQuestions;
+	}
+
+	public String deleteAll() {
+		data.clear();
+		String returnMessage = "Deleted all question set.";
+		System.out.println(returnMessage);
+		return returnMessage;
+	}
 }

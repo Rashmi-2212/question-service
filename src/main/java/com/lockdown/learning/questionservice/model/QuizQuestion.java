@@ -10,6 +10,7 @@ public class QuizQuestion {
 	private List<Tag> tags;
 	private String correctAnswer;
 	private int totalAnswers;
+
 	public Long getId() {
 		return id;
 	}
